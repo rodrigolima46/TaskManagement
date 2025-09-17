@@ -1,0 +1,14 @@
+@page
+@model TaskWeb.Pages.AddTodoModel
+@{
+    ViewData["Title"] = "Adicionar Tarefa";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    <input type="text" name="Title" placeholder="Digite a tarefa" />
+    <button type="submit">Adicionar</button>
+</form>
+
+<a href="/Todos">Voltar para a lista</a>
