@@ -1,0 +1,18 @@
+@page
+@model TaskWeb.Pages.TodosModel
+@{
+    ViewData["Title"] = "Lista de Tarefas";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a href="/AddTodo">Adicionar Tarefa</a>
+
+<ul>
+    @foreach (var item in Model.TodoItems)
+    {
+        <li>
+            @item.Title (@(item.IsDone ? "Concluída" : "Pendente"))
+        </li>
+    }
+</ul>
