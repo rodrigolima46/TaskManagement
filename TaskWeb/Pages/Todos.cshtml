@@ -12,7 +12,12 @@
     @foreach (var item in Model.TodoItems)
     {
         <li>
-            @item.Title (@(item.IsDone ? "Concluída" : "Pendente"))
+            @item.Title (@(item.IsDone ? "✔️ Concluída" : "⏳ Pendente"))
+
+            @if (!item.IsDone)
+            {
+                <a href="/CompleteTodo/@item.Id">Marcar como concluída</a>
+            }
         </li>
     }
 </ul>
