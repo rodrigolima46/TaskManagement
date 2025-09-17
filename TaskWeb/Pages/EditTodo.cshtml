@@ -1,0 +1,15 @@
+@page "{id:int}"
+@model TaskWeb.Pages.EditTodoModel
+@{
+    ViewData["Title"] = "Editar Tarefa";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    <input type="hidden" asp-for="Todo.Id" />
+    <input type="text" asp-for="Todo.Title" />
+    <button type="submit">Salvar</button>
+</form>
+
+<a href="/Todos">Voltar para a lista</a>
