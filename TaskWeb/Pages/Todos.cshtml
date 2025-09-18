@@ -6,24 +6,55 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<a href="/AddTodo">Adicionar Tarefa</a>
+<form method="get" style="margin-bottom:15px;">
+    <label for="status">Filtrar por:</label>
+    <select id="status" name="status">
+        <option value="" selected="@(string.IsNullOrEmpty(Model.Status))">Todas</option>
+        <option value="done" selected="@(Model.Status == "done")">Concluídas</option>
+        <option value="pending" selected="@(Model.Status == "pending")">Pendentes</option>
+    </select>
+    <button type="submit" style="margin-left:10px;">Aplicar</button>
+</form>
 
-<ul>
-    @foreach (var item in Model.TodoItems)
-    {
-        <li>
-            @item.Title (@(item.IsDone ? "✔️ Concluída" : "⏳ Pendente"))
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width:100%;">
+    <thead>
+        <tr>
+            <th>
+                <a asp-page="./Todos"
+                   asp-route-sort="title"
+                   asp-route-order="@(Model.Sort == "title" && Model.Order == "asc" ? "desc" : "asc")"
+                   asp-route-status="@Model.Status">
+                    Título @(Model.Sort == "title" ? (Model.Order == "asc" ? "⬆️" : "⬇️") : "")
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Todos"
+                   asp-route-sort="date"
+                   asp-route-order="@(Model.Sort == "date" && Model.Order == "asc" ? "desc" : "asc")"
+                   asp-route-status="@Model.Status">
+                    Data @(Model.Sort == "date" ? (Model.Order == "asc" ? "⬆️" : "⬇️") : "")
+                </a>
+            </th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Todos)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@(item.IsDone ? "Concluída" : "Pendente")</td>
+                <td>
+                    <a asp-page="/CompleteTodo" asp-route-id="@item.Id">✔️</a> |
+                    <a asp-page="/EditTodo" asp-route-id="@item.Id">✏️</a> |
+                    <a asp-page="/DeleteTodo" asp-route-id="@item.Id">🗑️</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-            @if (!item.IsDone)
-            {
-                <a href="/CompleteTodo/@item.Id">Marcar como concluída</a>
-            }
 
-            <a href="/DeleteTodo/@item.Id" style="margin-left:10px; color:red;">Excluir</a>
-            <a href="/EditTodo/@item.Id" style="margin-left:10px;">Editar</a>
-
-
-        </li>
-    }
-</ul>
-
+<a href="/AddTodo">Adicionar nova tarefa</a>
