@@ -15,7 +15,7 @@ namespace TaskWeb.Pages
         }
 
         [BindProperty]
-        public string? Title { get; set; }
+        public TodoItem TodoItem { get; set; } = new TodoItem();
 
         public void OnGet()
         {
@@ -23,13 +23,14 @@ namespace TaskWeb.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!string.IsNullOrEmpty(Title))
+            if (!ModelState.IsValid)
             {
-                var todo = new TodoItem { Title = Title };
-                _context.TodoItems.Add(todo);
-                await _context.SaveChangesAsync();
+                return Page();
             }
 
+            TodoItem.CreatedAt = DateTime.UtcNow; 
+            _context.TodoItems.Add(TodoItem);
+            await _context.SaveChangesAsync();
             return RedirectToPage("/Todos");
         }
     }
