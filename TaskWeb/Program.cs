@@ -1,29 +1,43 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TaskWeb.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adiciona serviços Razor Pages
-builder.Services.AddRazorPages();
-
-// Adiciona EF Core com SQLite
+// Banco de dados
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=tasks.db"));
 
-var app = builder.Build();
 
-// Configuração padrão do template
-if (!app.Environment.IsDevelopment())
+// Identity e UI padrão
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+    options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultUI(); // mantém as telas padrão
+
+// Forçar redirecionamento após login/registro para /Todos
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
-}
+    options.Events.OnSignedIn = context =>
+    {
+        context.Response.Redirect("/Todos");
+        return Task.CompletedTask;
+    };
+});
+
+
+builder.Services.AddRazorPages();
+
+var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
+
+app.UseAuthentication(); // ✅ habilita autenticação
 app.UseAuthorization();
 
-app.MapRazorPages();
+app.MapRazorPages(); // ✅ mapeia páginas padrão do Identity
 
 app.Run();
