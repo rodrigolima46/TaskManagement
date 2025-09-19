@@ -1,4 +1,6 @@
 @page
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 @model TaskWeb.Pages.TodosModel
 @{
     ViewData["Title"] = "Lista de Tarefas";
