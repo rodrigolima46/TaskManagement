@@ -488,3 +488,14 @@ $RECYCLE.BIN/
 *.db-wal
 *.db
 
+# Migrations antigas que você não quer versionar
+TaskWeb/Migrations/20250917035828_InitialCreate.*
+TaskWeb/Migrations/20250918025022_AddCreatedAtToTodo.*
+
+# Arquivos de teste locais
+TaskWeb/SendGridTest.cs
+
+# Outros arquivos temporários
+*.vspscc
+*.vssscc
+_ReSharper*/

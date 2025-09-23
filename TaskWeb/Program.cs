@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TaskWeb.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Configuration;
+using TaskWeb.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +32,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -39,5 +45,15 @@ app.UseAuthentication(); // ✅ habilita autenticação
 app.UseAuthorization();
 
 app.MapRazorPages(); // ✅ mapeia páginas padrão do Identity
+
+app.MapGet("/", async (IEmailSender emailSender) =>
+{
+    await emailSender.SendEmailAsync(
+        "rodrigo.lima.ads@gmail.com",
+        "Teste SendGrid",
+        "<strong>Se você recebeu isso, o envio funciona!</strong>"
+    );
+    return "E-mail enviado!";
+});
 
 app.Run();
