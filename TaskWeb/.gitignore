@@ -499,3 +499,5 @@ TaskWeb/SendGridTest.cs
 *.vspscc
 *.vssscc
 _ReSharper*/
+
+TaskWeb/appsettings.json
