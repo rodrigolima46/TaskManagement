@@ -8,52 +8,39 @@ using TaskWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Banco de dados
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=tasks.db"));
-
-
-// Identity e UI padrão
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-    options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultUI(); // mantém as telas padrão
-
-// Forçar redirecionamento após login/registro para /Todos
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Events.OnSignedIn = context =>
-    {
-        context.Response.Redirect("/Todos");
-        return Task.CompletedTask;
-    };
-});
-
-
+// Adicionar serviços
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 var app = builder.Build();
+
+// Configurar pipeline
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication(); // ✅ habilita autenticação
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages(); // ✅ mapeia páginas padrão do Identity
-
-app.MapGet("/", async (IEmailSender emailSender) =>
+// Redirecionar raiz "/" para login
+app.MapGet("/", context =>
 {
-    await emailSender.SendEmailAsync(
-        "rodrigo.lima.ads@gmail.com",
-        "Teste SendGrid",
-        "<strong>Se você recebeu isso, o envio funciona!</strong>"
-    );
-    return "E-mail enviado!";
+    context.Response.Redirect("/Identity/Account/Login");
+    return Task.CompletedTask;
 });
+
+app.MapRazorPages();
 
 app.Run();
