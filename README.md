@@ -1,6 +1,16 @@
 TaskWeb – Simple Task Manager
 
 A lightweight ASP.NET Core web app built with EF Core and SQLite.
+=======================================================================================================================================
+## 🐳 Running with Docker
+
+This project is available as a Docker image on Docker Hub.
+
+### Pull the image
+
+docker pull rodrigolimao46/taskweb:latest
+
+========================================================================================================================================
 
 This project uses **SendGrid** for sending emails (e.g., account registration, password reset). To enable email sending:
 
@@ -19,3 +29,4 @@ This project uses **SendGrid** for sending emails (e.g., account registration, p
        -e SendGrid__FromEmail="your_email@example.com" \
        -e SendGrid__FromName="Your Name" \
        taskweb:latest
+
