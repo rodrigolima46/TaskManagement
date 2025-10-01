@@ -1,4 +1,11 @@
 TaskWeb – Simple Task Manager
 
-A beginner-friendly ASP.NET Core web app with EF Core and SQLite.
-Add and list tasks while practicing C#, web development, and database integration.
+A lightweight ASP.NET Core web app built with EF Core and SQLite.
+It allows users to:
+- Register and log in
+
+- Reset password via email (SendGrid integration)
+
+- Create, edit, and delete tasks
+
+- Mark tasks as completed
