@@ -10,7 +10,7 @@ This project is available as a Docker image on Docker Hub.
 
 docker pull rodrigolimao46/taskweb:latest
 
-========================================================================================================================================
+=======================================================================================================================================
 
 This project uses **SendGrid** for sending emails (e.g., account registration, password reset). To enable email sending:
 
