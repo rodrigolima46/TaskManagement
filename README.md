@@ -5,6 +5,8 @@ A lightweight ASP.NET Core web app built with EF Core and SQLite.
 ## 🐳 Running with Docker
 
 This project is available as a Docker image on Docker Hub.
+[Docker image](https://hub.docker.com/r/rodrigolimao46/taskweb)
+
 
 ### Pull the image
 
